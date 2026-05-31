@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from 'react'
-import type { Task } from './types/task';
+import { useState } from 'react'
+import type { Task, TaskStatus } from './types/task';
 
 import Column from './components/Column.tsx';
 import AddTaskForm from './components/AddTaskForm.tsx';
@@ -35,7 +35,7 @@ function App() {
     task => task.status === 'done'
   );
 
-  function addTask(text: string) {
+  function addTask(text: string, taskStatus: TaskStatus) {
 
     if (!text.trim()) return;
 
@@ -44,7 +44,7 @@ function App() {
       {
         id: crypto.randomUUID(),
         title: text.trim(),
-        status: 'todo'
+        status: taskStatus
       }
     ]));
   }
