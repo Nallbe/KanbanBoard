@@ -1,6 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import type { Task } from './types/task';
+
 import Column from './components/Column.tsx';
+import AddTaskForm from './components/AddTaskForm.tsx';
+
 import './styles/App.css'
 
 function App() {
@@ -18,7 +21,7 @@ function App() {
     }
   ])
 
-  const [inputText, setInputText] = useState<string>('');
+  
 
   const todoTasks = tasks.filter(
     task => task.status === 'todo'
@@ -32,19 +35,18 @@ function App() {
     task => task.status === 'done'
   );
 
-  function addTask(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function addTask(text: string) {
+
+    if (!text.trim()) return;
 
     setTasks(prev => ([
       ...prev,
       {
         id: crypto.randomUUID(),
-        title: inputText.trim(),
+        title: text.trim(),
         status: 'todo'
       }
     ]));
-
-    setInputText('');
   }
 
 
@@ -62,11 +64,13 @@ function App() {
           tasks={doneTasks}
           title="Done"
         />
-
-        <form onSubmit={addTask}>
+        <AddTaskForm
+          addTask={addTask}
+        />
+        {/* <form onSubmit={addTask}>
           <input value={inputText} onChange={e => setInputText(e.target.value)}/>
           <button>Добавить</button>
-        </form>
+        </form> */}
       </section>
   )
 }
