@@ -1,16 +1,18 @@
-import type { Task } from '../types/task.ts'
+import type { Task, MoveSide } from '../types/task.ts'
 import TaskCard from './TaskCard'
 
 type ColumnProps = {
   title: string;
   tasks: Task[];
+  moveTask : (id: string, side: MoveSide) => void;
 };
 
 function Column(props: ColumnProps) {
   
   const {
     title,
-    tasks
+    tasks,
+    moveTask
   } = props;
 
   return (
@@ -20,7 +22,8 @@ function Column(props: ColumnProps) {
       {tasks.map(task => (
           <TaskCard
             key={task.id}
-            task={task}  
+            task={task}
+            moveTask={moveTask}
           />
       ))}
     </div>

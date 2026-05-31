@@ -17,6 +17,15 @@
   }
 }
 
+.columns-wrapper {
+  display: flex;
+  margin-bottom: 100px;
+}
+
+.task-card-column {
+  margin: 10px 30px 10px 30px;
+}
+
 .hero {
   position: relative;
 

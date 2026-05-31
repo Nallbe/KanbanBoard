@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Task, TaskStatus } from './types/task';
+import type { Task, TaskStatus, MoveSide } from './types/task';
 
 import Column from './components/Column.tsx';
 import AddTaskForm from './components/AddTaskForm.tsx';
@@ -18,6 +18,11 @@ function App() {
       id: crypto.randomUUID(),
       title: 'Кефтеме',
       status: 'inProgress'
+    },
+    {
+      id: crypto.randomUUID(),
+      title: 'Так нужно!',
+      status: 'done'
     }
   ])
 
@@ -49,28 +54,78 @@ function App() {
     ]));
   }
 
+  function moveTask(id: string, side: MoveSide) {
+    if (side === 'forward') {
+      setTasks(prev => prev.map(task => {
+
+        if (task.id !== id) return task;
+
+        if (task.status === 'todo') {
+          return {
+            ...task,
+            status: 'inProgress'
+          };
+        }
+
+        if (task.status === 'inProgress') {
+          return {
+            ...task,
+            status: 'done'
+          }
+        }
+
+        return task
+      }))
+    }
+    if (side === 'back') {
+      setTasks(prev => prev.map(task => {
+
+        if (task.id !== id) return task;
+
+        if (task.status === 'inProgress') {
+          return {
+            ...task,
+            status: 'todo'
+          };
+        }
+
+        if (task.status === 'done') {
+          return {
+            ...task,
+            status: 'inProgress'
+          }
+        }
+
+        return task
+      }))
+    }
+
+
+  }
+
 
   return (
       <section id="center">
-        <Column
-          tasks={todoTasks}
-          title="To Do"
-        />
-        <Column
-          tasks={inProgressTasks}
-          title="In Progress"
-        />
-        <Column
-          tasks={doneTasks}
-          title="Done"
-        />
+        <div className="columns-wrapper">
+          <Column
+            tasks={todoTasks}
+            title="To Do"
+            moveTask={moveTask}
+          />
+          <Column
+            tasks={inProgressTasks}
+            title="In Progress"
+            moveTask={moveTask}
+          />
+          <Column
+            tasks={doneTasks}
+            title="Done"
+            moveTask={moveTask}
+          />
+        </div>
         <AddTaskForm
           addTask={addTask}
         />
-        {/* <form onSubmit={addTask}>
-          <input value={inputText} onChange={e => setInputText(e.target.value)}/>
-          <button>Добавить</button>
-        </form> */}
       </section>
   )
 }

@@ -3,6 +3,10 @@ export type TaskStatus =
   | 'inProgress'
   | 'done';
 
+export type MoveSide =
+  | 'forward'
+  | 'back'
+
 
 export interface Task {
   id: string;
