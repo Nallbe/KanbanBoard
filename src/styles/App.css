@@ -26,6 +26,18 @@
   margin: 10px 30px 10px 30px;
 }
 
+.card-remove-btn {
+  
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 3px;
+  border-radius: 5px;
+}
+.card-remove-btn:hover {
+  background-color: dark-grey;
+  transition: 0.3s;
+}
+
 .hero {
   position: relative;
 

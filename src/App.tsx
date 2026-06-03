@@ -54,6 +54,11 @@ function App() {
     ]));
   }
 
+  function deleteTask(id: string) {
+    setTasks(prev => 
+      prev.filter(task => task.id !== id));
+  }
+
   function moveTask(id: string, side: MoveSide) {
     if (side === 'forward') {
       setTasks(prev => prev.map(task => {
@@ -111,16 +116,19 @@ function App() {
             tasks={todoTasks}
             title="To Do"
             moveTask={moveTask}
+            deleteTask={deleteTask}
           />
           <Column
             tasks={inProgressTasks}
             title="In Progress"
             moveTask={moveTask}
+            deleteTask={deleteTask}
           />
           <Column
             tasks={doneTasks}
             title="Done"
             moveTask={moveTask}
+            deleteTask={deleteTask}
           />
         </div>
         <AddTaskForm

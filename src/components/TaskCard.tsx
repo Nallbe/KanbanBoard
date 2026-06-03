@@ -3,26 +3,33 @@ import type { Task, MoveSide } from '../types/task'
 type TaskCardProps = {
   task: Task;
   moveTask: (id: string, side: MoveSide) => void;
+  deleteTask: (id: string) => void;
 };
 
 function TaskCard(props: TaskCardProps ) {
 
   const {
     task,
-    moveTask
+    moveTask,
+    deleteTask
   } = props
 
   return (
-    <div className="task-card-column">
-      <button
+    <div 
+      className="task-card-column">
+      {task.status !== 'todo' ? <button
         onClick={() => moveTask(task.id, 'back')}>
           ←
-      </button>
+      </button> : null}
       {task.title}
-      <button 
+      {task.status !== 'done' ? <button 
         onClick={() => moveTask(task.id, 'forward')}>
           →
-      </button>
+      </button> : null}
+        <button 
+          onClick={() => deleteTask(task.id)}
+          className="card-remove-btn"
+          >❌</button>
     </div>
   )
 }

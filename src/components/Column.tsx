@@ -5,14 +5,15 @@ type ColumnProps = {
   title: string;
   tasks: Task[];
   moveTask : (id: string, side: MoveSide) => void;
+  deleteTask: (id: string) => void;
 };
 
 function Column(props: ColumnProps) {
-  
   const {
     title,
     tasks,
-    moveTask
+    moveTask,
+    deleteTask
   } = props;
 
   return (
@@ -24,6 +25,7 @@ function Column(props: ColumnProps) {
             key={task.id}
             task={task}
             moveTask={moveTask}
+            deleteTask={deleteTask}
           />
       ))}
     </div>
