@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import type { Task, TaskStatus, MoveSide } from './types/task';
 
 import Column from './components/Column.tsx';
@@ -8,14 +8,17 @@ import './styles/App.css'
 
 function App() {
 
+
+  const [editingId, setEditingId] = useState<string>('');
+
   const [tasks, setTasks] = useState<Task[]>(() => {
     const result = localStorage.getItem('tasks');
     if (!result)  return [];
 
     try {
-      return JSON.parse(result) as Task[]
+      return JSON.parse(result) as Task[];
     } catch {
-      return []
+      return [];
     }
   })
 
@@ -23,6 +26,8 @@ function App() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
+
+  // Фильтры
   const todoTasks = tasks.filter(
     task => task.status === 'todo'
   );
@@ -103,27 +108,54 @@ function App() {
 
   }
 
+  function startEdit(id: string) {
+    setEditingId(id)
+  }
+
+  function saveEdit(id: string, text: string) {
+    console.log(id, text)
+    setTasks(prev => prev.map(task => {
+      if (task.id === id) {
+        return {
+          ...task,
+          title: text
+        }
+      } else return task
+    }))
+
+    setEditingId('');
+  }
+
 
   return (
       <section id="center">
         <div className="columns-wrapper">
           <Column
             tasks={todoTasks}
+            editingId={editingId}
             title="To Do"
             moveTask={moveTask}
             deleteTask={deleteTask}
+            startEdit={startEdit}
+            saveEdit={saveEdit}
           />
           <Column
             tasks={inProgressTasks}
+            editingId={editingId}
             title="In Progress"
             moveTask={moveTask}
             deleteTask={deleteTask}
+            startEdit={startEdit}
+            saveEdit={saveEdit}
           />
           <Column
             tasks={doneTasks}
+            editingId={editingId}
             title="Done"
             moveTask={moveTask}
             deleteTask={deleteTask}
+            startEdit={startEdit}
+            saveEdit={saveEdit}
           />
         </div>
         <AddTaskForm

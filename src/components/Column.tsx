@@ -4,16 +4,22 @@ import TaskCard from './TaskCard'
 type ColumnProps = {
   title: string;
   tasks: Task[];
+  editingId: string;
   moveTask : (id: string, side: MoveSide) => void;
   deleteTask: (id: string) => void;
+  startEdit: (id: string) => void;
+  saveEdit: (id: string, text: string) => void;
 };
 
 function Column(props: ColumnProps) {
   const {
     title,
     tasks,
+    editingId,
     moveTask,
-    deleteTask
+    deleteTask,
+    startEdit,
+    saveEdit
   } = props;
 
   return (
@@ -24,8 +30,11 @@ function Column(props: ColumnProps) {
           <TaskCard
             key={task.id}
             task={task}
+            editingId={editingId}
             moveTask={moveTask}
             deleteTask={deleteTask}
+            startEdit={startEdit}
+            saveEdit={saveEdit}
           />
       ))}
     </div>
