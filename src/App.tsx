@@ -9,7 +9,7 @@ import './styles/App.css'
 function App() {
 
 
-  const [editingId, setEditingId] = useState<string>('');
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [tasks, setTasks] = useState<Task[]>(() => {
     const result = localStorage.getItem('tasks');
@@ -123,7 +123,7 @@ function App() {
       } else return task
     }))
 
-    setEditingId('');
+    setEditingId(null);
   }
 
 

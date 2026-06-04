@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Task, MoveSide } from '../types/task'
 
 type TaskCardProps = {
@@ -24,36 +24,56 @@ function TaskCard(props: TaskCardProps ) {
   const [editingInput, setEditingInput] = useState(task.title);
 
 
+  useEffect(() => {
+    if (editingId === task.id) {
+      setEditingInput(task.title);
+    } 
+  }, [editingId, task.id, task.title])
+
   function handleSaveEdit() {
     saveEdit(task.id, editingInput);
   }
 
+  function handleMoveTask(e: React.MouseEvent<HTMLButtonElement>, id: string, side: MoveSide) {
+    e.stopPropagation();
+    moveTask(id, side);
+  }
+
+  function handleDeleteTask(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    deleteTask(task.id);
+  }
+
   return (
     <div className="task-card-column">
-      {editingId !== task.id ? <div onClick={() => startEdit(task.id)}>
+      {editingId !== task.id ? 
+      <div onClick={() => startEdit(task.id)}>
         {task.status !== 'todo' 
         && 
         <button 
-          onClick={() => moveTask(task.id, 'back')}
-        >←</button>}
+          onClick={(e) => handleMoveTask(e, task.id, 'back')}>←
+        </button>}
         <span>{task.title}</span>
-      {task.status !== 'done' 
+        {task.status !== 'done' 
         && 
         <button 
-          onClick={() => moveTask(task.id, 'forward')}>→</button>}
+          onClick={(e) => handleMoveTask(e, task.id, 'forward')}>→</button>}
         <button 
-          onClick={() => deleteTask(task.id)}
-          className="card-remove-btn"
-          >❌
-        </button>
+          onClick={handleDeleteTask}
+          className="card-btn"
+          >❌</button>
         <button
           onClick={() => startEdit(task.id)}
+          className="card-btn"
         >✏️</button>  
-      </div> 
-      : <div>
-          <input type="text" value={editingInput} onChange={(e) => setEditingInput(e.target.value)} />
-          <button onClick={handleSaveEdit}>✔️</button>
-        </div>}
+      </div> : 
+      <div>
+        <input 
+          value={editingInput} 
+          onChange={(e) => setEditingInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' ? handleSaveEdit() : ''}/>
+        <button onClick={handleSaveEdit}>✔️</button>
+      </div>}
     </div>
   )
 }
