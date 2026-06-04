@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Task, TaskStatus, MoveSide } from './types/task';
 
 import Column from './components/Column.tsx';
@@ -8,25 +8,20 @@ import './styles/App.css'
 
 function App() {
 
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: crypto.randomUUID(),
-      title: 'Изучит TypeScript',
-      status: 'todo'
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'Кефтеме',
-      status: 'inProgress'
-    },
-    {
-      id: crypto.randomUUID(),
-      title: 'Так нужно!',
-      status: 'done'
-    }
-  ])
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const result = localStorage.getItem('tasks');
+    if (!result)  return [];
 
-  
+    try {
+      return JSON.parse(result) as Task[]
+    } catch {
+      return []
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const todoTasks = tasks.filter(
     task => task.status === 'todo'

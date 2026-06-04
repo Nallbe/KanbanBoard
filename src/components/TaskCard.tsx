@@ -17,19 +17,22 @@ function TaskCard(props: TaskCardProps ) {
   return (
     <div 
       className="task-card-column">
-      {task.status !== 'todo' ? <button
-        onClick={() => moveTask(task.id, 'back')}>
+      {task.status !== 'todo' 
+        && <button
+          onClick={() => moveTask(task.id, 'back')}>
           ←
-      </button> : null}
+          </button>}
       {task.title}
-      {task.status !== 'done' ? <button 
-        onClick={() => moveTask(task.id, 'forward')}>
+      {task.status !== 'done' 
+        && <button 
+          onClick={() => moveTask(task.id, 'forward')}>
           →
-      </button> : null}
+        </button>}
         <button 
           onClick={() => deleteTask(task.id)}
           className="card-remove-btn"
-          >❌</button>
+          >❌
+        </button>
     </div>
   )
 }
