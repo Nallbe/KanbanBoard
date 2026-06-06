@@ -4,11 +4,12 @@ import TaskCard from './TaskCard'
 type ColumnProps = {
   title: string;
   tasks: Task[];
-  editingId: string;
+  editingId: string | null;
   moveTask : (id: string, side: MoveSide) => void;
   deleteTask: (id: string) => void;
   startEdit: (id: string) => void;
   saveEdit: (id: string, text: string) => void;
+  cancelEdit: () => void;
 };
 
 function Column(props: ColumnProps) {
@@ -19,7 +20,8 @@ function Column(props: ColumnProps) {
     moveTask,
     deleteTask,
     startEdit,
-    saveEdit
+    saveEdit,
+    cancelEdit
   } = props;
 
   return (
@@ -35,6 +37,7 @@ function Column(props: ColumnProps) {
             deleteTask={deleteTask}
             startEdit={startEdit}
             saveEdit={saveEdit}
+            cancelEdit={cancelEdit}
           />
       ))}
     </div>

@@ -3,11 +3,12 @@ import type { Task, MoveSide } from '../types/task'
 
 type TaskCardProps = {
   task: Task;
-  editingId: string;
+  editingId: string | null;
   moveTask: (id: string, side: MoveSide) => void;
   deleteTask: (id: string) => void;
   startEdit: (id: string) => void;
   saveEdit: (id: string, text: string) => void;
+  cancelEdit: () => void;
 };
 
 function TaskCard(props: TaskCardProps ) {
@@ -18,7 +19,8 @@ function TaskCard(props: TaskCardProps ) {
     moveTask,
     deleteTask,
     startEdit,
-    saveEdit
+    saveEdit,
+    cancelEdit
   } = props
 
   const [editingInput, setEditingInput] = useState(task.title);
@@ -29,6 +31,8 @@ function TaskCard(props: TaskCardProps ) {
       setEditingInput(task.title);
     } 
   }, [editingId, task.id, task.title])
+
+
 
   function handleSaveEdit() {
     saveEdit(task.id, editingInput);
@@ -44,10 +48,14 @@ function TaskCard(props: TaskCardProps ) {
     deleteTask(task.id);
   }
 
+  function handleCancelTask() {
+    cancelEdit();
+  }
+
   return (
     <div className="task-card-column">
       {editingId !== task.id ? 
-      <div onClick={() => startEdit(task.id)}>
+      <div>
         {task.status !== 'todo' 
         && 
         <button 
@@ -71,7 +79,15 @@ function TaskCard(props: TaskCardProps ) {
         <input 
           value={editingInput} 
           onChange={(e) => setEditingInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' ? handleSaveEdit() : ''}/>
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSaveEdit();
+            } else if (e.key === 'Escape') {
+              handleCancelTask();
+            }
+          }}
+          />
+          
         <button onClick={handleSaveEdit}>✔️</button>
       </div>}
     </div>

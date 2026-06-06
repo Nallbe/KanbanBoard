@@ -40,6 +40,8 @@ function App() {
     task => task.status === 'done'
   );
 
+
+
   function addTask(text: string, taskStatus: TaskStatus) {
 
     if (!text.trim()) return;
@@ -126,6 +128,10 @@ function App() {
     setEditingId(null);
   }
 
+  function cancelEdit() {
+    setEditingId(null);
+  }
+
 
   return (
       <section id="center">
@@ -138,6 +144,7 @@ function App() {
             deleteTask={deleteTask}
             startEdit={startEdit}
             saveEdit={saveEdit}
+            cancelEdit={cancelEdit}
           />
           <Column
             tasks={inProgressTasks}
@@ -147,6 +154,7 @@ function App() {
             deleteTask={deleteTask}
             startEdit={startEdit}
             saveEdit={saveEdit}
+            cancelEdit={cancelEdit}
           />
           <Column
             tasks={doneTasks}
@@ -156,6 +164,7 @@ function App() {
             deleteTask={deleteTask}
             startEdit={startEdit}
             saveEdit={saveEdit}
+            cancelEdit={cancelEdit}
           />
         </div>
         <AddTaskForm
