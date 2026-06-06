@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
-import type { Task, MoveSide } from '../types/task'
+import type { Task, MoveSide } from '../types/task';
+
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 
 type TaskCardProps = {
   task: Task;
@@ -58,22 +66,38 @@ function TaskCard(props: TaskCardProps ) {
       <div>
         {task.status !== 'todo' 
         && 
-        <button 
-          onClick={(e) => handleMoveTask(e, task.id, 'back')}>←
-        </button>}
+        <Button 
+          onClick={(e) => handleMoveTask(e, task.id, 'back')}
+          variant="contained"
+          size="small"
+          >
+            <ArrowBackIcon/>
+        </Button>}
         <span>{task.title}</span>
         {task.status !== 'done' 
         && 
-        <button 
-          onClick={(e) => handleMoveTask(e, task.id, 'forward')}>→</button>}
-        <button 
+        <Button 
+          onClick={(e) => handleMoveTask(e, task.id, 'forward')}
+          variant="contained"
+          size="small"
+          >
+            <ArrowForwardIcon/>
+        </Button>}
+        <Button 
           onClick={handleDeleteTask}
-          className="card-btn"
-          >❌</button>
-        <button
+          variant="outlined"
+          color="error"
+          size="small"
+          >
+          <DeleteIcon/>
+        </Button>
+        <Button
           onClick={() => startEdit(task.id)}
-          className="card-btn"
-        >✏️</button>  
+          variant="outlined"
+          size="small"
+        >
+          <EditIcon/>
+        </Button>  
       </div> : 
       <div>
         <input 
@@ -87,8 +111,14 @@ function TaskCard(props: TaskCardProps ) {
             }
           }}
           />
-          
-        <button onClick={handleSaveEdit}>✔️</button>
+        <Button 
+          onClick={handleSaveEdit}
+          variant="contained"
+          color="success"
+          size="small"
+          >
+          <CheckIcon/>
+        </Button>
       </div>}
     </div>
   )
