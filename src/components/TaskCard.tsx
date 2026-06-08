@@ -78,19 +78,22 @@ function TaskCard(props: TaskCardProps ) {
       }}>
       
         {editingId !== task.id ? 
-        <Box>
+        <Box sx={{
+              width: '100%',
+            }}>
 
           <CardContent>
             <Typography sx={{
               wordBreak: 'break-word',
-              overflowWrap: 'anywhere'
+              overflowWrap: 'anywhere',
+              textAlign: 'center',
             }}>
               {task.title}
             </Typography>
           </CardContent>
 
           <CardActions sx={{
-              mx: 'auto',
+              justifyContent: 'center',
               gap: 1,
             }}>
             {task.status !== 'todo' 
