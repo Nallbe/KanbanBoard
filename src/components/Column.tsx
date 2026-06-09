@@ -1,5 +1,8 @@
-import type { Task, MoveSide } from '../types/task.ts'
-import TaskCard from './TaskCard'
+import type { Task, MoveSide } from "../types/task.ts";
+import TaskCard from "./TaskCard";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 type ColumnProps = {
   title: string;
@@ -25,10 +28,26 @@ function Column(props: ColumnProps) {
   } = props;
 
   return (
-    <div>
-      <h2>{title}</h2>
-      
-      {tasks.map(task => (
+    <Paper 
+      elevation={3}
+      sx={{
+        p: 2,
+        minWidth: 280,
+        maxWidth: 320,
+        flex: 1,
+        borderRadius: 3,
+      }}
+    >
+      <Typography
+        variant="h5"
+        align="center"
+        sx={{ mb: 2 }}
+      >
+        {title}
+      </Typography>
+
+      <Box>
+        {tasks.map(task => (
           <TaskCard
             key={task.id}
             task={task}
@@ -39,8 +58,9 @@ function Column(props: ColumnProps) {
             saveEdit={saveEdit}
             cancelEdit={cancelEdit}
           />
-      ))}
-    </div>
+        ))}
+      </Box>
+    </Paper>
   )
 
 }

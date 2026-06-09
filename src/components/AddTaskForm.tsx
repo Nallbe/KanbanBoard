@@ -1,5 +1,11 @@
-import { useState } from 'react'
-import type { TaskStatus } from '../types/task';
+import { useState } from "react"
+import type { TaskStatus } from "../types/task";
+
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 
 type AddTaskFormProps = {
   addTask: (text: string, taskStatus: TaskStatus) => void;
@@ -9,8 +15,8 @@ function AddTaskForm(props: AddTaskFormProps) {
   
   const { addTask } = props
 
-  const [inputText, setInputText] = useState<string>('');
-  const [formSelect, setFormSelect] = useState<TaskStatus>('todo');
+  const [inputText, setInputText] = useState<string>("");
+  const [formSelect, setFormSelect] = useState<TaskStatus>("todo");
 
 
   function handleSubmit(
@@ -19,8 +25,8 @@ function AddTaskForm(props: AddTaskFormProps) {
     e.preventDefault();
     addTask(inputText, formSelect);
 
-    setInputText('');
-    setFormSelect('todo');
+    setInputText("");
+    setFormSelect("todo");
   }
 
   function inputHandleChange(
@@ -29,28 +35,40 @@ function AddTaskForm(props: AddTaskFormProps) {
     setInputText(e.target.value)
   }
 
-  function selectHandleChange(
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) {
-    setFormSelect(e.target.value as TaskStatus)
-  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <select 
+    <Box
+      component="form" 
+      onSubmit={handleSubmit}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 2,
+        mt: 3
+      }}>
+        
+      <Select
+        size="small" 
         value={formSelect}
-        onChange={selectHandleChange}>
-        <option value="todo">todo</option>
-        <option value="inProgress">inProgress</option>
-        <option value="done">done</option>
-      </select>
-      <input 
+        onChange={(e) => setFormSelect(e.target.value as TaskStatus)}>
+        <MenuItem value="todo">todo</MenuItem>
+        <MenuItem value="inProgress">inProgress</MenuItem>
+        <MenuItem value="done">done</MenuItem>
+      </Select>
+      <TextField
+        label="Новая задача"
+        size="small"
         value={inputText} 
         onChange={inputHandleChange}
       />
 
-      <button>Добавить</button>
-    </form>
+      <Button
+        type="submit"
+        variant="contained"
+        >
+          Добавить
+        </Button>
+    </Box>
   )
 }
 

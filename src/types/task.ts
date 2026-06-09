@@ -1,11 +1,11 @@
 export type TaskStatus =
-  | 'todo'
-  | 'inProgress'
-  | 'done';
+  | "todo"
+  | "inProgress"
+  | "done";
 
 export type MoveSide =
-  | 'forward'
-  | 'back'
+  | "forward"
+  | "back"
 
 
 export interface Task {

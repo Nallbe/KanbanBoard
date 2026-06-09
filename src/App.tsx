@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import type { Task, TaskStatus, MoveSide } from './types/task';
+import { useState, useEffect } from "react";
+import type { Task, TaskStatus, MoveSide } from "./types/task";
 
-import Column from './components/Column.tsx';
-import AddTaskForm from './components/AddTaskForm.tsx';
+import Column from "./components/Column.tsx";
+import AddTaskForm from "./components/AddTaskForm.tsx";
 
-import './styles/App.css'
+import "./styles/App.css";
+import Box from "@mui/material/Box";
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [tasks, setTasks] = useState<Task[]>(() => {
-    const result = localStorage.getItem('tasks');
+    const result = localStorage.getItem("tasks");
     if (!result)  return [];
 
     try {
@@ -23,21 +24,21 @@ function App() {
   })
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
 
   // Фильтры
   const todoTasks = tasks.filter(
-    task => task.status === 'todo'
+    task => task.status === "todo"
   );
 
   const inProgressTasks = tasks.filter(
-    task => task.status === 'inProgress'
+    task => task.status === "inProgress"
   );
 
   const doneTasks = tasks.filter(
-    task => task.status === 'done'
+    task => task.status === "done"
   );
 
 
@@ -62,44 +63,44 @@ function App() {
   }
 
   function moveTask(id: string, side: MoveSide) {
-    if (side === 'forward') {
+    if (side === "forward") {
       setTasks(prev => prev.map(task => {
 
         if (task.id !== id) return task;
 
-        if (task.status === 'todo') {
+        if (task.status === "todo") {
           return {
             ...task,
-            status: 'inProgress'
+            status: "inProgress"
           };
         }
 
-        if (task.status === 'inProgress') {
+        if (task.status === "inProgress") {
           return {
             ...task,
-            status: 'done'
+            status: "done"
           }
         }
 
         return task
       }))
     }
-    if (side === 'back') {
+    if (side === "back") {
       setTasks(prev => prev.map(task => {
 
         if (task.id !== id) return task;
 
-        if (task.status === 'inProgress') {
+        if (task.status === "inProgress") {
           return {
             ...task,
-            status: 'todo'
+            status: "todo"
           };
         }
 
-        if (task.status === 'done') {
+        if (task.status === "done") {
           return {
             ...task,
-            status: 'inProgress'
+            status: "inProgress"
           }
         }
 
@@ -134,8 +135,19 @@ function App() {
 
 
   return (
-      <section id="center">
-        <div className="columns-wrapper">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 15
+        }}>
+        <Box sx={{
+          display: "flex",
+          flexDirection: "row",
+          mb: 10,
+          gap: 3,
+        }}>
           <Column
             tasks={todoTasks}
             editingId={editingId}
@@ -166,11 +178,11 @@ function App() {
             saveEdit={saveEdit}
             cancelEdit={cancelEdit}
           />
-        </div>
+        </Box>
         <AddTaskForm
           addTask={addTask}
         />
-      </section>
+      </Box>
   )
 }
 

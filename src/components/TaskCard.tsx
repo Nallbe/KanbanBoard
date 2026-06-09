@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import type { Task, MoveSide } from '../types/task';
+import { useState, useEffect } from "react";
+import type { Task, MoveSide } from "../types/task";
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import CheckIcon from '@mui/icons-material/Check';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import CardActions from "@mui/material/CardActions";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 
 type TaskCardProps = {
@@ -67,39 +67,41 @@ function TaskCard(props: TaskCardProps ) {
   }
 
   return (
-    <Card sx={{ 
+    <Card 
+    elevation={3}
+    sx={{ 
       borderRadius: 5,
-      cursor: 'pointer',
-      display: 'flex',
-      flexDirection: 'column',
+      cursor: "pointer",
+      display: "flex",
+      flexDirection: "column",
       mb: 2,
       p: 2,
-      maxWidth: '250px'
+      maxWidth: "250px"
       }}>
       
         {editingId !== task.id ? 
         <Box sx={{
-              width: '100%',
+              width: "100%",
             }}>
 
           <CardContent>
             <Typography sx={{
-              wordBreak: 'break-word',
-              overflowWrap: 'anywhere',
-              textAlign: 'center',
+              wordBreak: "break-word",
+              overflowWrap: "anywhere",
+              textAlign: "center",
             }}>
               {task.title}
             </Typography>
           </CardContent>
 
           <CardActions sx={{
-              justifyContent: 'center',
+              justifyContent: "center",
               gap: 1,
             }}>
-            {task.status !== 'todo' 
+            {task.status !== "todo" 
             && 
             <IconButton 
-              onClick={(e) => handleMoveTask(e, task.id, 'back')}
+              onClick={(e) => handleMoveTask(e, task.id, "back")}
               size="small"
               >
               <ArrowBackIcon/>
@@ -120,10 +122,10 @@ function TaskCard(props: TaskCardProps ) {
               <EditIcon/>
             </IconButton>
 
-            {task.status !== 'done' 
+            {task.status !== "done" 
             && 
             <IconButton 
-              onClick={(e) => handleMoveTask(e, task.id, 'forward')}
+              onClick={(e) => handleMoveTask(e, task.id, "forward")}
               size="small"
               >
               <ArrowForwardIcon/>
@@ -141,9 +143,9 @@ function TaskCard(props: TaskCardProps ) {
             value={editingInput} 
             onChange={(e) => setEditingInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleSaveEdit();
-              } else if (e.key === 'Escape') {
+              } else if (e.key === "Escape") {
                 handleCancelTask();
               }
             }}
