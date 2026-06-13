@@ -18,11 +18,13 @@ import Box from "@mui/material/Box";
 type TaskCardProps = {
   task: Task;
   editingId: string | null;
+  startDrag: (id: string) => void;
   moveTask: (id: string, side: MoveSide) => void;
   deleteTask: (id: string) => void;
   startEdit: (id: string) => void;
   saveEdit: (id: string, text: string) => void;
   cancelEdit: () => void;
+  
 };
 
 function TaskCard(props: TaskCardProps ) {
@@ -34,10 +36,12 @@ function TaskCard(props: TaskCardProps ) {
     deleteTask,
     startEdit,
     saveEdit,
-    cancelEdit
+    cancelEdit,
+    startDrag
   } = props
 
   const [editingInput, setEditingInput] = useState(task.title);
+
 
 
   useEffect(() => {
@@ -66,8 +70,11 @@ function TaskCard(props: TaskCardProps ) {
     cancelEdit();
   }
 
+
   return (
     <Card 
+    draggable
+    onDragStart={() => startDrag(task.id)}
     elevation={3}
     sx={{ 
       borderRadius: 5,

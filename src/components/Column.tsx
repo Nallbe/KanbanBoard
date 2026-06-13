@@ -1,4 +1,4 @@
-import type { Task, MoveSide } from "../types/task.ts";
+import type { Task, MoveSide, TaskStatus } from "../types/task.ts";
 import TaskCard from "./TaskCard";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 
 type ColumnProps = {
   title: string;
+  status: TaskStatus;
   tasks: Task[];
   editingId: string | null;
   moveTask : (id: string, side: MoveSide) => void;
@@ -13,22 +14,31 @@ type ColumnProps = {
   startEdit: (id: string) => void;
   saveEdit: (id: string, text: string) => void;
   cancelEdit: () => void;
+  startDrag : (id: string) => void ;
+  dropTask: (status: TaskStatus) => void;
 };
 
 function Column(props: ColumnProps) {
   const {
     title,
+    status,
     tasks,
     editingId,
     moveTask,
     deleteTask,
     startEdit,
     saveEdit,
-    cancelEdit
+    cancelEdit,
+    startDrag,
+    dropTask
   } = props;
+
+
 
   return (
     <Paper 
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={() => dropTask(status)}
       elevation={3}
       sx={{
         p: 2,
@@ -57,6 +67,7 @@ function Column(props: ColumnProps) {
             startEdit={startEdit}
             saveEdit={saveEdit}
             cancelEdit={cancelEdit}
+            startDrag={startDrag}
           />
         ))}
       </Box>

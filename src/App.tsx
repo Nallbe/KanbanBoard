@@ -9,9 +9,6 @@ import Box from "@mui/material/Box";
 
 function App() {
 
-
-  const [editingId, setEditingId] = useState<string | null>(null);
-
   const [tasks, setTasks] = useState<Task[]>(() => {
     const result = localStorage.getItem("tasks");
     if (!result)  return [];
@@ -26,6 +23,12 @@ function App() {
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
+
+
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
+  // const [dragOverStatus, setDragOverStatus] = useState<TaskStatus | null>(null);
 
 
   // Фильтры
@@ -134,6 +137,27 @@ function App() {
   }
 
 
+  function startDrag(id: string) {
+    console.log('Dragging:', id)
+    setDraggedTaskId(id)
+  }
+
+  function dropTask(status: TaskStatus) {
+    if (!draggedTaskId) return;
+
+    setTasks(prev => 
+      prev.map(task => 
+        task.id === draggedTaskId ? {
+          ...task,
+          status: status,
+        }: task
+      ) 
+    )
+
+    setDraggedTaskId(null)
+  }
+
+
   return (
       <Box
         sx={{
@@ -152,31 +176,40 @@ function App() {
             tasks={todoTasks}
             editingId={editingId}
             title="To Do"
+            status={"todo"}
             moveTask={moveTask}
             deleteTask={deleteTask}
             startEdit={startEdit}
             saveEdit={saveEdit}
             cancelEdit={cancelEdit}
+            startDrag={startDrag}
+            dropTask={dropTask}
           />
           <Column
             tasks={inProgressTasks}
             editingId={editingId}
             title="In Progress"
+            status={"inProgress"}
             moveTask={moveTask}
             deleteTask={deleteTask}
             startEdit={startEdit}
             saveEdit={saveEdit}
             cancelEdit={cancelEdit}
+            startDrag={startDrag}
+            dropTask={dropTask}
           />
           <Column
             tasks={doneTasks}
             editingId={editingId}
             title="Done"
+            status={"done"}
             moveTask={moveTask}
             deleteTask={deleteTask}
             startEdit={startEdit}
             saveEdit={saveEdit}
             cancelEdit={cancelEdit}
+            startDrag={startDrag}
+            dropTask={dropTask}
           />
         </Box>
         <AddTaskForm
