@@ -9,6 +9,7 @@ type ColumnProps = {
   status: TaskStatus;
   tasks: Task[];
   editingId: string | null;
+  dragOverStatus: TaskStatus | null;
   moveTask : (id: string, side: MoveSide) => void;
   deleteTask: (id: string) => void;
   startEdit: (id: string) => void;
@@ -16,6 +17,8 @@ type ColumnProps = {
   cancelEdit: () => void;
   startDrag : (id: string) => void ;
   dropTask: (status: TaskStatus) => void;
+  handleEditDragOverStatus: (status: TaskStatus) => void;
+  clearDragOverStatus: () => void;
 };
 
 function Column(props: ColumnProps) {
@@ -24,20 +27,27 @@ function Column(props: ColumnProps) {
     status,
     tasks,
     editingId,
+    dragOverStatus,
     moveTask,
     deleteTask,
     startEdit,
     saveEdit,
     cancelEdit,
     startDrag,
-    dropTask
+    dropTask,
+    handleEditDragOverStatus,
+    clearDragOverStatus
   } = props;
 
 
 
   return (
     <Paper 
-      onDragOver={(e) => e.preventDefault()}
+      onDragOver={(e) => {
+        e.preventDefault();
+        handleEditDragOverStatus(status);
+      }}
+      onDragLeave={clearDragOverStatus}
       onDrop={() => dropTask(status)}
       elevation={3}
       sx={{
@@ -46,6 +56,8 @@ function Column(props: ColumnProps) {
         maxWidth: 320,
         flex: 1,
         borderRadius: 3,
+        backgroundColor: dragOverStatus === status ? "#e3f2fd" : "#f5f5f5",
+        transition: "background-color 0.2s ease",
       }}
     >
       <Typography

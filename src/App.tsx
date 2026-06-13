@@ -28,7 +28,7 @@ function App() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
-  // const [dragOverStatus, setDragOverStatus] = useState<TaskStatus | null>(null);
+  const [dragOverStatus, setDragOverStatus] = useState<TaskStatus | null>(null);
 
 
   // Фильтры
@@ -119,7 +119,6 @@ function App() {
   }
 
   function saveEdit(id: string, text: string) {
-    console.log(id, text)
     setTasks(prev => prev.map(task => {
       if (task.id === id) {
         return {
@@ -138,7 +137,6 @@ function App() {
 
 
   function startDrag(id: string) {
-    console.log('Dragging:', id)
     setDraggedTaskId(id)
   }
 
@@ -154,7 +152,18 @@ function App() {
       ) 
     )
 
-    setDraggedTaskId(null)
+    setDraggedTaskId(null);
+    setDragOverStatus(null);
+  }
+
+  function handleEditDragOverStatus(status: TaskStatus) {
+    if (!status) return;
+
+    setDragOverStatus(status);
+  }
+
+  function clearDragOverStatus() {
+    setDragOverStatus(null);
   }
 
 
@@ -175,6 +184,7 @@ function App() {
           <Column
             tasks={todoTasks}
             editingId={editingId}
+            dragOverStatus={dragOverStatus}
             title="To Do"
             status={"todo"}
             moveTask={moveTask}
@@ -184,10 +194,13 @@ function App() {
             cancelEdit={cancelEdit}
             startDrag={startDrag}
             dropTask={dropTask}
+            handleEditDragOverStatus={handleEditDragOverStatus}
+            clearDragOverStatus={clearDragOverStatus}
           />
           <Column
             tasks={inProgressTasks}
             editingId={editingId}
+            dragOverStatus={dragOverStatus}
             title="In Progress"
             status={"inProgress"}
             moveTask={moveTask}
@@ -197,10 +210,13 @@ function App() {
             cancelEdit={cancelEdit}
             startDrag={startDrag}
             dropTask={dropTask}
+            handleEditDragOverStatus={handleEditDragOverStatus}
+            clearDragOverStatus={clearDragOverStatus}
           />
           <Column
             tasks={doneTasks}
             editingId={editingId}
+            dragOverStatus={dragOverStatus}
             title="Done"
             status={"done"}
             moveTask={moveTask}
@@ -210,6 +226,8 @@ function App() {
             cancelEdit={cancelEdit}
             startDrag={startDrag}
             dropTask={dropTask}
+            handleEditDragOverStatus={handleEditDragOverStatus}
+            clearDragOverStatus={clearDragOverStatus}
           />
         </Box>
         <AddTaskForm
